@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.secondhandWeb.mapper.OrdersMapper">
+    <select id="getOrderList" resultType="com.example.secondhandWeb.po.vo.orderVo">
+        SELECT `orders`.`orderId`,`orders`.`goodsId`,`goods`.`goodsName`,`goods`.`goodsImage`,`goods`.`goodsPrice`,`orders`.`orderPrice`,`orders`.`orderState`,`orders`.`buyerId`,`goods`.`sellerId`
+FROM `orders` INNER JOIN `goods` WHERE `goods`.`goodsId`=`orders`.`goodsId`
+    </select>
+
+    <select id="getBuyList" resultType="com.example.secondhandWeb.po.vo.orderVo">
+        SELECT `orders`.`orderId`,`orders`.`goodsId`,`orders`.`buyerId`,`orders`.`adderId`,`orders`.`orderPrice`,`orders`.`orderState`,`goods`.`goodsName`,`goods`.`sellerId`,`goods`.`goodsIntroduct`,`goods`.`goodsImage`,`user`.`userName`,`user`.`userImage`
+FROM `orders` INNER JOIN `goods` INNER JOIN `user` ON `goods`.`sellerId`=`user`.`userId` AND `orders`.`goodsId`=`goods`.`goodsId`
+WHERE `orders`.`buyerId`=#{buyerId} ORDER BY `orders`.`orderCreaT` DESC
+    </select>
+
+    <select id="getSellList" resultType="com.example.secondhandWeb.po.vo.orderVo">
+        SELECT `orders`.`orderId`,`orders`.`goodsId`,`orders`.`buyerId`,`orders`.`adderId`,`orders`.`orderPrice`,`orders`.`orderState`,`goods`.`goodsName`,`goods`.`sellerId`,`goods`.`goodsIntroduct`,`goods`.`goodsImage`,`user`.`userName`,`user`.`userImage`
+FROM `orders` INNER JOIN `goods` INNER JOIN `user` ON `orders`.`buyerId`=`user`.`userId` AND `orders`.`goodsId`=`goods`.`goodsId`
+WHERE `goods`.`sellerId`=#{sellerId} ORDER BY `orders`.`orderCreaT` DESC
+    </select>
+
+    <select id="getBuyDetail" resultType="com.example.secondhandWeb.po.vo.orderVo">
+        SELECT `orders`.`orderId`,`orders`.`goodsId`,`orders`.`buyerId`,`goods`.`sellerId`,`user`.`userName`,`user`.`userImage`,`adderss`.`recName`,`adderss`.`recAdder`,`adderss`.`recPhone`,`goods`.`goodsName`,`goods`.`goodsIntroduct`,`goods`.`goodsImage`,`goods`.`goodsPrice`,`goods`.`goodsCar`,`orders`.`orderPrice`,`orders`.`orderState`,`orders`.`orderCreaT`,`orders`.`orderPayT`,`orders`.`orderDelT`,`orders`.`orderConfT`
+FROM `orders` INNER JOIN `goods` INNER JOIN `user` INNER JOIN `adderss` ON `goods`.`sellerId`=`user`.`userId` AND `orders`.`goodsId`=`goods`.`goodsId` AND `adderss`.`adderId`=`orders`.`adderId`
+WHERE `orders`.`orderId`=#{orderId}
+    </select>
+
+    <select id="getSellDetail" resultType="com.example.secondhandWeb.po.vo.orderVo">
+        SELECT `orders`.`orderId`,`orders`.`goodsId`,`orders`.`buyerId`,`goods`.`sellerId`,`user`.`userName`,`user`.`userImage`,`adderss`.`recName`,`adderss`.`recAdder`,`adderss`.`recPhone`,`goods`.`goodsName`,`goods`.`goodsIntroduct`,`goods`.`goodsImage`,`goods`.`goodsPrice`,`goods`.`goodsCar`,`orders`.`orderPrice`,`orders`.`orderState`,`orders`.`orderCreaT`,`orders`.`orderPayT`,`orders`.`orderDelT`,`orders`.`orderConfT`
+FROM `orders` INNER JOIN `goods` INNER JOIN `user` INNER JOIN `adderss` ON `orders`.`buyerId`=`user`.`userId` AND `orders`.`goodsId`=`goods`.`goodsId` AND `adderss`.`adderId`=`orders`.`adderId`
+WHERE `orders`.`orderId`=#{orderId}
+    </select>
+
+    <select id="getOrderData" resultType="com.example.secondhandWeb.po.vo.orderVo">
+        SELECT `orders`.`orderId`,`orders`.`goodsId`,`orders`.`orderPrice`,`goods`.`goodsName`,`goods`.`goodsImage`,`goods`.`goodsPrice`,`goods`.`goodsCar`
+FROM `orders` INNER JOIN `goods` ON `orders`.`goodsId`=`goods`.`goodsId`
+WHERE `orders`.`orderId`=#{orderId}
+    </select>
+</mapper>

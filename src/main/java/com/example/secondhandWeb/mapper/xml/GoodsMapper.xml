@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.secondhandWeb.mapper.GoodsMapper">
+    <select id="getDetailById" resultType="com.example.secondhandWeb.po.vo.goodsVo">
+        SELECT `goods`.`goodsFavorite`,`goods`.`goodsId`,`goods`.`goodsImage`,`goods`.`goodsClass`,`goods`.`goodsIntroduct`,`goods`.`goodsName`,`goods`.`goodsOldNew`,`goods`.`goodsPrice`,`goods`.`goodsCar`,`goods`.`isSell`,`goods`.`sellerId`,`user`.`userName`,`user`.`userPhone`,`user`.`userSex`,`user`.`userImage`,`user`.`userSchool`,`user`.`attentCount`,`user`.`fansCount`
+FROM `goods` INNER JOIN `user` ON `goods`.`sellerId`=`user`.`userId`
+WHERE `goods`.`goodsId`=#{goodsId}
+    </select>
+
+    <select id="getAllGoodsList" resultType="com.example.secondhandWeb.po.Goods">
+        SELECT * FROM `goods`
+    </select>
+
+    <select id="getClassCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM `goods`
+WHERE `goods`.`goodsClass`=#{goodsClass}
+    </select>
+</mapper>

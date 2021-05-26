@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.secondhandWeb.mapper.AttentionMapper">
+    <select id="getBeAttentList" resultType="com.example.secondhandWeb.po.vo.attentVo">
+        SELECT `attention`.`attentId`,`attention`.`userId`,`attention`.`beAttentId`,`user`.`userImage`,`user`.`userName`,`user`.`userSchool`,`user`.`publishCount`,`user`.`attentCount`,`user`.`fansCount`
+FROM `attention` INNER JOIN `user` ON `attention`.`beAttentId`=`user`.`userId`
+WHERE `attention`.`userId`=#{userId}
+    </select>
+
+    <select id="getFansList" resultType="com.example.secondhandWeb.po.vo.attentVo">
+        SELECT `attention`.`attentId`,`attention`.`userId`,`attention`.`beAttentId`,`user`.`userImage`,`user`.`userName`,`user`.`userSchool`,`user`.`publishCount`,`user`.`attentCount`,`user`.`fansCount`
+FROM `attention` INNER JOIN `user` ON `attention`.`userId`=`user`.`userId`
+WHERE `attention`.`beAttentId`=#{userId}
+    </select>
+
+</mapper>

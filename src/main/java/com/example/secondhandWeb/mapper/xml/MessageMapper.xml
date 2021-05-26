@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.secondhandWeb.mapper.MessageMapper">
+    <select id="getMessList" resultType="com.example.secondhandWeb.po.vo.messVo">
+SELECT DISTINCT `message`.`userId`,`message`.`goodsId`,`message`.`ortherId`,`user`.`userName`,`user`.`userImage`,`message`.`isShow`,`goods`.`goodsImage`,`message`.`isRead`
+FROM `message` INNER JOIN `user` INNER JOIN `goods` ON `message`.`ortherId`=`user`.`userId` AND `goods`.`goodsId`=`message`.`goodsId`
+WHERE `message`.`userId`=#{userId} AND `message`.`isShow`=1
+    </select>
+</mapper>

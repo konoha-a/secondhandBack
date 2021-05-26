@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.secondhandWeb.mapper.FavoriteMapper">
+    <select id="getFavoListById" resultType="com.example.secondhandWeb.po.vo.favoVo">
+SELECT `goods`.`goodsName`,`goods`.`goodsImage`,`goods`.`goodsFavorite`,`goods`.`goodsPrice`,`favorite`.`favoId`,`favorite`.`userId`,`favorite`.`goodsId`
+FROM `goods` INNER JOIN `favorite` ON `favorite`.`goodsId`=`goods`.`goodsId`
+WHERE `favorite`.`userId` = #{userId}
+    </select>
+
+    <select id="getListCount" resultType="java.lang.Integer">
+
+SELECT COUNT(*) FROM `goods` INNER JOIN `favorite` ON `favorite`.`goodsId`=`goods`.`goodsId`
+WHERE `favorite`.`userId` = #{userId}
+    </select>
+</mapper>
