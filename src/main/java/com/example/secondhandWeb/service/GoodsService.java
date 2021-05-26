@@ -32,9 +32,11 @@ public interface GoodsService extends IService<Goods> {
 
     goodsVo getDetailById(Long goodsId);
 
-    String getClassNum(int index);
+    String getClassName(int index);
 
-    List<Goods> getGoodsListByClass(int index);
+    List<Goods> getGoodsListByClass(int index,int pageNo,int pageSize);
+
+    int getClassCount(int index);
 
     List<Goods> findGoodsInClass(List<Goods> classList,String goodsName);
 
@@ -42,9 +44,13 @@ public interface GoodsService extends IService<Goods> {
 
     List<Goods> getTGoodsList(Long sellerId);
 
-    int getClassCount(int index);
+    List<Goods> getMyGoodsList(Long userId,int pageNo,int pageSize);
+
+    int getMyGoodsCount(Long userId);
 
     int editGoods(Goods goods);
 
     int deleteFGoods(Long goodsId);
+
+
 }

@@ -80,12 +80,6 @@ public class UserController {
         return userService.getUserCount();
     }
 
-    //更新用户列表
-    @PostMapping("updateUser")
-    public User updateUser(Long userId){
-        return userService.updateUser(userId);
-    }
-
     //编辑用户信息
     @PostMapping("editUser")
     public int editUser(User user){
@@ -93,8 +87,20 @@ public class UserController {
     }
 
     //获取某个用户信息
-    @PostMapping("getUserInfo/{userId}")
-    public User getUserInfo(@PathVariable Long userId){return userService.getUserInfo(userId);}
+    @PostMapping("getUserInfo")
+    public User getUserInfo(Long userId){return userService.getUserInfo(userId);}
+
+    //修改用户信息时判断是否有重复的用户名
+    @PostMapping("checkUserName")
+    public int checkUserName(Long userId,String userName){
+        return userService.checkUserName(userId,userName);
+    }
+
+    //修改用户信息时判断是否有重复的手机号
+    @PostMapping("checkUserPhone")
+    public int checkUserPhone(Long userId,String userPhone){
+        return userService.checkUserPhone(userId,userPhone);
+    }
 }
 
 

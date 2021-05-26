@@ -18,6 +18,12 @@ FROM `orders` INNER JOIN `goods` INNER JOIN `user` ON `orders`.`buyerId`=`user`.
 WHERE `goods`.`sellerId`=#{sellerId} ORDER BY `orders`.`orderCreaT` DESC
     </select>
 
+    <select id="getCarList" resultType="com.example.secondhandWeb.po.vo.orderVo">
+        SELECT `orders`.`orderId`,`orders`.`goodsId`,`orders`.`buyerId`,`orders`.`adderId`,`orders`.`orderPrice`,`orders`.`orderState`,`goods`.`goodsName`,`goods`.`sellerId`,`goods`.`goodsIntroduct`,`goods`.`goodsImage`,`user`.`userName`,`user`.`userImage`
+FROM `orders` INNER JOIN `goods` INNER JOIN `user` ON `goods`.`sellerId`=`user`.`userId` AND `orders`.`goodsId`=`goods`.`goodsId`
+WHERE `orders`.`buyerId`=#{userId} AND `orders`.`orderState`=3 ORDER BY `orders`.`orderCreaT` DESC
+    </select>
+
     <select id="getBuyDetail" resultType="com.example.secondhandWeb.po.vo.orderVo">
         SELECT `orders`.`orderId`,`orders`.`goodsId`,`orders`.`buyerId`,`goods`.`sellerId`,`user`.`userName`,`user`.`userImage`,`adderss`.`recName`,`adderss`.`recAdder`,`adderss`.`recPhone`,`goods`.`goodsName`,`goods`.`goodsIntroduct`,`goods`.`goodsImage`,`goods`.`goodsPrice`,`goods`.`goodsCar`,`orders`.`orderPrice`,`orders`.`orderState`,`orders`.`orderCreaT`,`orders`.`orderPayT`,`orders`.`orderDelT`,`orders`.`orderConfT`
 FROM `orders` INNER JOIN `goods` INNER JOIN `user` INNER JOIN `adderss` ON `goods`.`sellerId`=`user`.`userId` AND `orders`.`goodsId`=`goods`.`goodsId` AND `adderss`.`adderId`=`orders`.`adderId`
@@ -34,5 +40,10 @@ WHERE `orders`.`orderId`=#{orderId}
         SELECT `orders`.`orderId`,`orders`.`goodsId`,`orders`.`orderPrice`,`goods`.`goodsName`,`goods`.`goodsImage`,`goods`.`goodsPrice`,`goods`.`goodsCar`
 FROM `orders` INNER JOIN `goods` ON `orders`.`goodsId`=`goods`.`goodsId`
 WHERE `orders`.`orderId`=#{orderId}
+    </select>
+
+    <select id="getSellCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM `orders` INNER JOIN `goods` ON `orders`.`goodsId`=`goods`.`goodsId`
+        WHERE `goods`.`sellerId`=#{sellerId}
     </select>
 </mapper>

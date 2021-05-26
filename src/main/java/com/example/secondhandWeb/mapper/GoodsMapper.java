@@ -19,6 +19,4 @@ public interface GoodsMapper extends BaseMapper<Goods> {
     public goodsVo getDetailById(Long goodsId);
 
     public List<Goods> getAllGoodsList();
-
-    public int getClassCount(String goodsClass);
 }

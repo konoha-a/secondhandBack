@@ -8,11 +8,13 @@ import com.example.secondhandWeb.mapper.AttentionMapper;
 import com.example.secondhandWeb.po.Goods;
 import com.example.secondhandWeb.po.User;
 import com.example.secondhandWeb.po.vo.attentVo;
+import com.example.secondhandWeb.po.vo.orderVo;
 import com.example.secondhandWeb.service.AttentionService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -90,15 +92,45 @@ public class AttentionServiceImpl extends ServiceImpl<AttentionMapper, Attention
     }
 
     @Override
-    public List<attentVo> getBeAttentList(Long userId) {
-        List<attentVo> list=attentionMapper.getBeAttentList(userId);
-        return list;
+    public List<attentVo> getBeAttentList(Long userId,int pageNo,int pageSize) {
+        List<attentVo> attent= attentionMapper.getBeAttentList(userId);
+        List<attentVo> attent1 = new ArrayList<>();
+        int j = 0;
+        for (int i = pageSize * (pageNo - 1); i < pageSize * pageNo; i++) {
+            if (i < attent.size()) {
+                if (!attent.get(i).getAttentId().equals("")) {
+                    attent1.add(attent.get(i));
+                    j++;
+                }
+            }
+            if (j == pageSize) break;
+        }
+        if (attent1.size() == 0) {
+            return null;
+        } else {
+            return attent1;
+        }
     }
 
     @Override
-    public List<attentVo> getFansList(Long userId) {
-        List<attentVo> list=attentionMapper.getFansList(userId);
-        return list;
+    public List<attentVo> getFansList(Long userId,int pageNo,int pageSize) {
+        List<attentVo> attent=attentionMapper.getFansList(userId);
+        List<attentVo> attent1 = new ArrayList<>();
+        int j = 0;
+        for (int i = pageSize * (pageNo - 1); i < pageSize * pageNo; i++) {
+            if (i < attent.size()) {
+                if (!attent.get(i).getAttentId().equals("")) {
+                    attent1.add(attent.get(i));
+                    j++;
+                }
+            }
+            if (j == pageSize) break;
+        }
+        if (attent1.size() == 0) {
+            return null;
+        } else {
+            return attent1;
+        }
     }
 
 }

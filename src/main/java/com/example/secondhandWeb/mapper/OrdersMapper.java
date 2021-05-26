@@ -15,15 +15,19 @@ import java.util.List;
  * @since 2021-04-20
  */
 public interface OrdersMapper extends BaseMapper<Orders> {
-    List<orderVo> getOrderList(int pageNo);
+    List<orderVo> getOrderList();
 
     List<orderVo> getBuyList(Long buyerId);
 
     List<orderVo> getSellList(Long sellerId);
+
+    List<orderVo> getCarList(Long userId);
 
     orderVo getBuyDetail(Long orderId);
 
     orderVo getSellDetail(Long orderId);
 
     orderVo getOrderData(Long orderId);
+
+    int getSellCount(Long sellerId);
 }

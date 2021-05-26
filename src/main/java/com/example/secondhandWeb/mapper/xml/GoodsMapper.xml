@@ -10,9 +10,4 @@ WHERE `goods`.`goodsId`=#{goodsId}
     <select id="getAllGoodsList" resultType="com.example.secondhandWeb.po.Goods">
         SELECT * FROM `goods`
     </select>
-
-    <select id="getClassCount" resultType="java.lang.Integer">
-        SELECT COUNT(*) FROM `goods`
-WHERE `goods`.`goodsClass`=#{goodsClass}
-    </select>
 </mapper>

@@ -36,10 +36,10 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         QueryWrapper<Goods> wrapper=new QueryWrapper<>();
         wrapper.eq("isSell",0);
         wrapper.eq("isDelete",0);
+
         List<Goods> goods=baseMapper.selectList(wrapper);
         List<Goods> goods1=new ArrayList<>();
         int j=0;
-
         for(int i=pageSize*(pageNo-1); i<pageSize*pageNo; i++){
             if(i<goods.size()){
                 if(!goods.get(i).getGoodsName().equals("")){
@@ -60,8 +60,8 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     @Override
     public int getGoodsCount() {
         QueryWrapper<Goods> wrapper=new QueryWrapper<>();
-        wrapper.ne("isSell",1);
-        wrapper.ne("isDelete",1);
+        wrapper.eq("isSell",0);
+        wrapper.eq("isDelete",0);
         return baseMapper.selectCount(wrapper);
     }
 
@@ -112,7 +112,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
 
     //对应分类名称
     @Override
-    public String getClassNum(int index) {
+    public String getClassName(int index) {
         if(index==1)    return "书籍";
         else if(index==2)  return "学习用品";
         else if(index==3)    return "食品";
@@ -123,11 +123,38 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
 
     //根据商品分类返回商品列表
     @Override
-    public List<Goods> getGoodsListByClass(int index) {
+    public List<Goods> getGoodsListByClass(int index,int pageNo,int pageSize) {
         QueryWrapper<Goods> wrapper=new QueryWrapper<>();
-        wrapper.eq("goodsClass",getClassNum(index));
+        wrapper.eq("goodsClass",getClassName(index));
         wrapper.eq("isSell",0);
-        return baseMapper.selectList(wrapper);
+        wrapper.eq("isDelete",0);
+
+        List<Goods> goods=baseMapper.selectList(wrapper);
+        List<Goods> goods1=new ArrayList<>();
+        int j=0;
+        for(int i=pageSize*(pageNo-1); i<pageSize*pageNo; i++){
+            if(i<goods.size()){
+                if(!goods.get(i).getGoodsName().equals("")){
+                    goods1.add(goods.get(i));
+                    j++;
+                }
+            }
+            if(j==pageSize)   break;
+        }
+        if(goods1.size()==0){
+            return null;
+        }else{
+            return goods1;
+        }
+    }
+
+    @Override
+    public int getClassCount(int index) {
+        QueryWrapper<Goods> wrapper=new QueryWrapper<>();
+        wrapper.eq("goodsClass",getClassName(index));
+        wrapper.eq("isSell",0);
+        wrapper.eq("isDelete",0);
+        return baseMapper.selectCount(wrapper);
     }
 
     //在分类中模糊查询商品
@@ -156,8 +183,33 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     }
 
     @Override
-    public int getClassCount(int index) {
-        return goodsMapper.getClassCount(getClassNum(index));
+    public List<Goods> getMyGoodsList(Long userId,int pageNo,int pageSize) {
+        QueryWrapper<Goods> wrapper=new QueryWrapper<>();
+        wrapper.eq("sellerId",userId);
+        List<Goods> goods = baseMapper.selectList(wrapper);
+        List<Goods> goods1=new ArrayList<>();
+        int j=0;
+        for(int i=pageSize*(pageNo-1); i<pageSize*pageNo; i++){
+            if(i<goods.size()){
+                if(!goods.get(i).getGoodsName().equals("")){
+                    goods1.add(goods.get(i));
+                    j++;
+                }
+            }
+            if(j==pageSize)   break;
+        }
+        if(goods1.size()==0){
+            return null;
+        }else{
+            return goods1;
+        }
+    }
+
+    @Override
+    public int getMyGoodsCount(Long userId) {
+        QueryWrapper<Goods> wrapper=new QueryWrapper<>();
+        wrapper.eq("sellerId",userId);
+        return baseMapper.selectCount(wrapper);
     }
 
     @Override
@@ -192,4 +244,5 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
 
         return 1;
     }
+
 }

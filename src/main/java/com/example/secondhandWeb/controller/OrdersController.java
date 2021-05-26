@@ -72,17 +72,29 @@ public class OrdersController {
         return ordersService.addOrder(orders);
     }
 
-    //我买到的商品列表
+    //我买到的商品订单列表
     @PostMapping("getBuyList")
-    public List<orderVo> getBuyList(Long buyerId){
-        return ordersService.getBuyList(buyerId);
+    public List<orderVo> getBuyList(Long buyerId,int pageNo,int pageSize){
+        return ordersService.getBuyList(buyerId,pageNo,pageSize);
     }
 
-    //我卖出的商品列表
+    //我买到的商品订单总数
+    @PostMapping("getBuyCount")
+    public int getBuyCount(Long buyerId){return ordersService.getBuyCount(buyerId);}
+
+    //我卖出的商品订单列表
     @PostMapping("getSellList")
-    public List<orderVo> getSellList(Long sellerId){
-        return ordersService.getSellList(sellerId);
+    public List<orderVo> getSellList(Long sellerId,int pageNo,int pageSize){
+        return ordersService.getSellList(sellerId,pageNo,pageSize);
     }
+
+    //我卖出的商品订单总数
+    @PostMapping("getSellCount")
+    public int getSellCount(Long sellerId){return ordersService.getSellCount(sellerId);}
+
+    //物流订单列表
+    @PostMapping("getCarList")
+    public List<orderVo> getCarList(Long userId){return ordersService.getCarList(userId);}
 
     //完成支付
     @PostMapping("paySuccess")
@@ -102,7 +114,7 @@ public class OrdersController {
         return ordersService.deliverSuccess(orderId);
     }
 
-    //确认收获
+    //确认收货
     @PostMapping("confirmOrder")
     public int confirmOrder(Long orderId){
         return ordersService.confirmOrder(orderId);

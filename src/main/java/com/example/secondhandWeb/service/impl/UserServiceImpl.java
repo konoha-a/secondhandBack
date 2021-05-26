@@ -37,25 +37,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 //    是否存在相同的用户名
     @Override
     public int isExistUserName(String userName){
-        List<User> users=baseMapper.selectList(null);
-        for(int i=0;i<users.size();i++){
-            if(users.get(i).getUserName().equals(userName)){
-                return 1;
-            }
-        }
-        return -1;
+        QueryWrapper<User> wrapper=new QueryWrapper<>();
+        wrapper.eq("userName",userName);
+        List<User> list=baseMapper.selectList(wrapper);
+        if(list.size()==0) return -1;
+        else return 1;
     }
 
 //    是否存在相同的手机号
     @Override
     public int isExistUserPhone(String userPhone){
-        List<User> users=baseMapper.selectList(null);
-        for(int i=0;i<users.size();i++){
-            if(users.get(i).getUserPhone().equals(userPhone)){
-                return 1;
-            }
-        }
-        return -1;
+        QueryWrapper<User> wrapper=new QueryWrapper<>();
+        wrapper.eq("userPhone",userPhone);
+        List<User> list=baseMapper.selectList(wrapper);
+        if(list.size()==0) return -1;
+        else return 1;
     }
 
     //    用户注册
@@ -109,15 +105,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public User updateUser(Long userId) {
-        QueryWrapper<User> wrapper=new QueryWrapper<>();
-        wrapper.eq("userId",userId);
-        User user=baseMapper.selectOne(wrapper);
-        userMapper.updateById(user);
-        return user;
-    }
-
-    @Override
     public int editUser(User user){
         QueryWrapper<User> wrapper=new QueryWrapper<>();
         wrapper.eq("userId",user.getUserId());
@@ -137,6 +124,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         QueryWrapper<User> wrapper=new QueryWrapper<>();
         wrapper.eq("userId",userId);
         return baseMapper.selectOne(wrapper);
+    }
+
+    @Override
+    public int checkUserName(Long userId,String userName) {
+        QueryWrapper<User> wrapper=new QueryWrapper<>();
+        wrapper.eq("userId",userId);
+        User user=baseMapper.selectOne(wrapper);
+        if(user.getUserName().equals(userName)) return -1;//没改用户名，不存在重复
+        else return isExistUserName(userName);
+    }
+
+    @Override
+    public int checkUserPhone(Long userId, String userPhone) {
+        QueryWrapper<User> wrapper=new QueryWrapper<>();
+        wrapper.eq("userId",userId);
+        User user=baseMapper.selectOne(wrapper);
+        if(user.getUserPhone().equals(userPhone)) return -1;//没改用户名，不存在重复
+        else return isExistUserPhone(userPhone);
     }
 
 }

@@ -22,7 +22,7 @@ public interface AttentionService extends IService<Attention> {
 
     int isAttent(Long userId, Long beAttentId);
 
-    List<attentVo> getBeAttentList(Long userId);
+    List<attentVo> getBeAttentList(Long userId,int pageNo,int pageSize);
 
-    List<attentVo> getFansList(Long userId);
+    List<attentVo> getFansList(Long userId,int pageNo,int pageSize);
 }

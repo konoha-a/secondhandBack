@@ -49,14 +49,14 @@ public class AttentionController {
 
     //根据用户id获取关注列表
     @PostMapping("getBeAttentList")
-    public List<attentVo> getBeAttentList(Long userId){
-        return attentionService.getBeAttentList(userId);
+    public List<attentVo> getBeAttentList(Long userId,int pageNo,int pageSize){
+        return attentionService.getBeAttentList(userId,pageNo,pageSize);
     }
 
     //根据用户id获取粉丝列表
     @PostMapping("getFansList")
-    public List<attentVo> getFansList(Long userId){
-        return attentionService.getFansList(userId);
+    public List<attentVo> getFansList(Long userId,int pageNo,int pageSize){
+        return attentionService.getFansList(userId,pageNo,pageSize);
     }
 }
 

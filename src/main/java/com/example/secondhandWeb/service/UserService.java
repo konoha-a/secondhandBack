@@ -33,11 +33,11 @@ public interface UserService extends IService<User> {
 
     int getUserCount();//获取用户总数
 
-    User updateUser(Long userId);
-
     int editUser(User user);
 
     User getUserInfo(Long userId);
 
+    int checkUserName(Long userId,String userName);
 
+    int checkUserPhone(Long userId, String userPhone);
 }

@@ -34,4 +34,8 @@ public class attentVo {
 
     @TableField("publishCount")
     private Integer publishCount;
+
+    public Long getAttentId(){
+        return attentId;
+    }
 }

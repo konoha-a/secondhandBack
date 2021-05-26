@@ -34,7 +34,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
     //获取订单列表
     @Override
     public List<orderVo> getOrderList(int pageNo, int pageSize) {
-        List<orderVo> orders = ordersMapper.getOrderList(pageNo);
+        List<orderVo> orders = ordersMapper.getOrderList();
         List<orderVo> orders1 = new ArrayList<>();
         int j = 0;
 
@@ -82,13 +82,62 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
     }
 
     @Override
-    public List<orderVo> getBuyList(Long buyerId) {
-        return ordersMapper.getBuyList(buyerId);
+    public List<orderVo> getBuyList(Long buyerId,int pageNo,int pageSize) {
+        List<orderVo> orders= ordersMapper.getBuyList(buyerId);
+        List<orderVo> orders1 = new ArrayList<>();
+        int j = 0;
+        for (int i = pageSize * (pageNo - 1); i < pageSize * pageNo; i++) {
+            if (i < orders.size()) {
+                if (!orders.get(i).getOrderId().equals("")) {
+                    orders1.add(orders.get(i));
+                    j++;
+                }
+            }
+            if (j == pageSize) break;
+        }
+        if (orders1.size() == 0) {
+            return null;
+        } else {
+            return orders1;
+        }
     }
 
     @Override
-    public List<orderVo> getSellList(Long sellerId) {
-        return ordersMapper.getSellList(sellerId);
+    public List<orderVo> getSellList(Long sellerId, int pageNo, int pageSize) {
+        List<orderVo> orders = ordersMapper.getSellList(sellerId);
+        List<orderVo> orders1 = new ArrayList<>();
+        int j = 0;
+        for (int i = pageSize * (pageNo - 1); i < pageSize * pageNo; i++) {
+            if (i < orders.size()) {
+                if (!orders.get(i).getOrderId().equals("")) {
+                    orders1.add(orders.get(i));
+                    j++;
+                }
+            }
+            if (j == pageSize) break;
+        }
+        if (orders1.size() == 0) {
+            return null;
+        } else {
+            return orders1;
+        }
+    }
+
+    @Override
+    public List<orderVo> getCarList(Long userId) {
+        return ordersMapper.getCarList(userId);
+    }
+
+    @Override
+    public int getBuyCount(Long buyerId) {
+        QueryWrapper<Orders> wrapper=new QueryWrapper<>();
+        wrapper.eq("buyerId",buyerId);
+        return baseMapper.selectCount(wrapper);
+    }
+
+    @Override
+    public int getSellCount(Long sellerId) {
+        return ordersMapper.getSellCount(sellerId);
     }
 
     @Override
@@ -213,6 +262,5 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
         }
         return 1;
     }
-
 
 }

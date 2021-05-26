@@ -28,11 +28,17 @@ public interface OrdersService extends IService<Orders> {
 
     Long addOrder(Orders orders);
 
-    List<orderVo> getBuyList(Long buyerId);
+    List<orderVo> getBuyList(Long buyerId,int pageNo,int pageSize);
+
+    List<orderVo> getSellList(Long sellerId,int pageNo,int pageSize);
+
+    List<orderVo> getCarList(Long userId);
+
+    int getBuyCount(Long buyerId);
+
+    int getSellCount(Long sellerId);
 
     int editOrderState(Long orderId,Integer orderState);
-
-    List<orderVo> getSellList(Long sellerId);
 
     int paySuccess(Long orderId,Long goodsId);
 
