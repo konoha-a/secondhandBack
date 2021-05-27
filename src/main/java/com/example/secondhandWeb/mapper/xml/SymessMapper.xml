@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.secondhandWeb.mapper.SymessMapper">
+<select id="getIsGoodsDetail" resultType="com.example.secondhandWeb.po.vo.symessVo">
+    SELECT `symess`.`symessName`,`symess`.`symessT`,`goods`.`goodsName`,`goods`.`goodsImage`,`goods`.`goodsPrice`,`symess`.`isRead`,`symess`.`symessCont`,`symess`.`symessImp`,`symess`.`symessWhy`
+FROM `symess` INNER JOIN `goods` ON `symess`.`goodsId`=`goods`.`goodsId`
+WHERE `symess`.`symessId`=#{symessId}
+</select>
+</mapper>

@@ -20,6 +20,8 @@ public interface GoodsService extends IService<Goods> {
 
     List<Goods> getGoodsList(int pageNo,int pageSize);//获取商品列表
 
+    List<Goods> getGoodsListMa(int pageNo, int pageSize);
+
     int getGoodsCount();//获取商品总数
 
     int getGoodsCountMa();
@@ -51,6 +53,4 @@ public interface GoodsService extends IService<Goods> {
     int editGoods(Goods goods);
 
     int deleteFGoods(Long goodsId);
-
-
 }

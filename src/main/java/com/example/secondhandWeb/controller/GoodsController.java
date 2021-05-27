@@ -24,11 +24,15 @@ public class GoodsController {
     @Autowired
     private GoodsService goodsService;
 
-    //获取商品列表
+    //获取商品列表（前台用
     @PostMapping("getGoodsList")
     public List<Goods> getGoodsList(int pageNo, int pageSize) {
         return goodsService.getGoodsList(pageNo, pageSize);
     }
+
+    //获取商品列表（管理员用
+    @PostMapping("getGoodsListMa")
+    public List<Goods> getGoodsListMa(int pageNo,int pageSize){return goodsService.getGoodsListMa(pageNo,pageSize);}
 
     //获取商品总数（前台用）
     @GetMapping("getGoodsCount")
@@ -48,7 +52,7 @@ public class GoodsController {
         return goodsService.findGoodsByName(goodsName);
     }
 
-    //真删除商品
+    //真删除商品（管理员
     @PostMapping("deleteTGoods")
     public int deleteTGoods(Long goodsId) {
         return goodsService.deleteTGoods(goodsId);
@@ -124,7 +128,7 @@ public class GoodsController {
         return goodsService.editGoods(goods);
     }
 
-    //假删除商品
+    //假删除商品（用户用
     @PostMapping("deleteFGoods")
     public int deleteFGoods(Long goodsId) {
         return goodsService.deleteFGoods(goodsId);

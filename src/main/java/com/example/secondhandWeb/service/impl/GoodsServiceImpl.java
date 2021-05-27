@@ -36,6 +36,32 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         QueryWrapper<Goods> wrapper=new QueryWrapper<>();
         wrapper.eq("isSell",0);
         wrapper.eq("isDelete",0);
+        wrapper.eq("isManage",0);
+
+        List<Goods> goods=baseMapper.selectList(wrapper);
+        List<Goods> goods1=new ArrayList<>();
+        int j=0;
+        for(int i=pageSize*(pageNo-1); i<pageSize*pageNo; i++){
+            if(i<goods.size()){
+                if(!goods.get(i).getGoodsName().equals("")){
+                    goods1.add(goods.get(i));
+                    j++;
+                }
+            }
+            if(j==pageSize)   break;
+        }
+        if(goods1.size()==0){
+            return null;
+        }else{
+            return goods1;
+        }
+    }
+
+    @Override
+    public List<Goods> getGoodsListMa(int pageNo, int pageSize) {
+        QueryWrapper<Goods> wrapper=new QueryWrapper<>();
+        wrapper.eq("isDelete",0);
+        wrapper.eq("isManage",0);
 
         List<Goods> goods=baseMapper.selectList(wrapper);
         List<Goods> goods1=new ArrayList<>();
@@ -62,13 +88,17 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         QueryWrapper<Goods> wrapper=new QueryWrapper<>();
         wrapper.eq("isSell",0);
         wrapper.eq("isDelete",0);
+        wrapper.eq("isManage",0);
         return baseMapper.selectCount(wrapper);
     }
 
     //获取商品总数（管理员用）
     @Override
     public int getGoodsCountMa() {
-        return baseMapper.selectCount(null);
+        QueryWrapper<Goods> wrapper=new QueryWrapper<>();
+        wrapper.eq("isDelete",0);
+        wrapper.eq("isManage",0);
+        return baseMapper.selectCount(wrapper);
     }
 
     //根据商品名称模糊查询
@@ -82,7 +112,6 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     //添加商品
     @Override
     public Long addGoods(Goods goods) {
-        List<Goods> good=baseMapper.selectList(null);
         baseMapper.insert(goods);
         //修改用户发布商品数量
         QueryWrapper<User> wrapper=new QueryWrapper<>();
@@ -94,13 +123,23 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         return goods.getGoodsId();
     }
 
-    //删除商品
+    //删除商品（管理员
     @Override
     public int deleteTGoods(Long goodsId) {
         QueryWrapper<Goods> wrapper=new QueryWrapper<>();
         wrapper.eq("goodsId",goodsId);
         Goods good=baseMapper.selectOne(wrapper);
-        return baseMapper.deleteById(good);
+        good.setIsManage(1);
+        baseMapper.updateById(good);
+
+        //修改用户发布商品数量
+        QueryWrapper<User> wrapper1=new QueryWrapper<>();
+        wrapper1.eq("userId",good.getSellerId());
+        User user=userMapper.selectOne(wrapper1);
+        user.setPublishCount(user.getPublishCount()-1);
+        userMapper.updateById(user);
+
+        return 1;
     }
 
     //根据商品id获取商品详情
@@ -128,6 +167,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         wrapper.eq("goodsClass",getClassName(index));
         wrapper.eq("isSell",0);
         wrapper.eq("isDelete",0);
+        wrapper.eq("isManage",0);
 
         List<Goods> goods=baseMapper.selectList(wrapper);
         List<Goods> goods1=new ArrayList<>();
@@ -154,6 +194,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         wrapper.eq("goodsClass",getClassName(index));
         wrapper.eq("isSell",0);
         wrapper.eq("isDelete",0);
+        wrapper.eq("isManage",0);
         return baseMapper.selectCount(wrapper);
     }
 
@@ -171,6 +212,8 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         QueryWrapper<Goods> wrapper=new QueryWrapper<>();
         wrapper.eq("sellerId",sellerId);
         wrapper.eq("isSell",0);
+        wrapper.eq("isDelete",0);
+        wrapper.eq("isManage",0);
         return baseMapper.selectList(wrapper);
     }
 
@@ -179,6 +222,8 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         QueryWrapper<Goods> wrapper=new QueryWrapper<>();
         wrapper.eq("sellerId",sellerId);
         wrapper.eq("isSell",1);
+        wrapper.eq("isDelete",0);
+        wrapper.eq("isManage",0);
         return baseMapper.selectList(wrapper);
     }
 
@@ -186,6 +231,8 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     public List<Goods> getMyGoodsList(Long userId,int pageNo,int pageSize) {
         QueryWrapper<Goods> wrapper=new QueryWrapper<>();
         wrapper.eq("sellerId",userId);
+        wrapper.eq("isDelete",0);
+        wrapper.eq("isManage",0);
         List<Goods> goods = baseMapper.selectList(wrapper);
         List<Goods> goods1=new ArrayList<>();
         int j=0;
@@ -209,6 +256,8 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     public int getMyGoodsCount(Long userId) {
         QueryWrapper<Goods> wrapper=new QueryWrapper<>();
         wrapper.eq("sellerId",userId);
+        wrapper.eq("isDelete",0);
+        wrapper.eq("isManage",0);
         return baseMapper.selectCount(wrapper);
     }
 
@@ -237,7 +286,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
 
         //修改用户发布商品数量
         QueryWrapper<User> wrapper1=new QueryWrapper<>();
-        wrapper.eq("userId",good.getSellerId());
+        wrapper1.eq("userId",good.getSellerId());
         User user=userMapper.selectOne(wrapper1);
         user.setPublishCount(user.getPublishCount()-1);
         userMapper.updateById(user);

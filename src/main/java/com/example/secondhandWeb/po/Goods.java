@@ -72,6 +72,9 @@ public class Goods implements Serializable {
     @TableField("isDelete")
     private Integer isDelete;
 
+    @TableField("isManage")
+    private Integer isManage;
+
     public void setGoodsName(String goodsName) {
         this.goodsName = goodsName;
     }
@@ -105,6 +108,7 @@ public class Goods implements Serializable {
     public void setGoodsCar(Double goodsCar){this.goodsCar=goodsCar;}
     public void setIsSell(Integer isSell){this.isSell=isSell;}
     public void setIsDelete(Integer isDelete){this.isDelete=isDelete;}
+    public void setIsManage(Integer isManage){this.isManage=isManage;}
 
     public Long getGoodsId() {
         return goodsId;
@@ -136,5 +140,6 @@ public class Goods implements Serializable {
     public Integer getIsSell(){return isSell;}
     public Integer getIsDelete(){return isDelete;}
     public String getGoodsImage(){return goodsImage;}
+    public Integer getIsManage(){return isManage;}
 
 }
