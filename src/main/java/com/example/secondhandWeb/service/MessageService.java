@@ -32,5 +32,5 @@ public interface MessageService extends IService<Message> {
 
     int isExistRead(Long userId);
 
-    int serReaded(Long goodsId, Long userId, Long ortherId);
+    int setReaded(Long goodsId, Long userId, Long ortherId);
 }

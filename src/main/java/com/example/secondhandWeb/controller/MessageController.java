@@ -89,7 +89,7 @@ public class MessageController {
     //标记已读
     @PostMapping("setReaded")
     public int setReaded(Long goodsId,Long userId,Long ortherId){
-        return messageService.serReaded(goodsId,userId,ortherId);
+        return messageService.setReaded(goodsId,userId,ortherId);
     }
 }
 

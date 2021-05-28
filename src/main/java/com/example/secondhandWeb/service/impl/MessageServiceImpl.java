@@ -122,6 +122,16 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
         message2.setSendT(new Date());
         baseMapper.insert(message2);
 
+        QueryWrapper<Message> wrapper=new QueryWrapper<>();
+        wrapper.eq("ortherId",userId);
+        wrapper.eq("userId",ortherId);
+        wrapper.eq("goodsId",goodsId);
+        List<Message> list = baseMapper.selectList(wrapper);
+        for(int i=0;i<list.size();i++){
+            list.get(i).setIsRead(0);
+            baseMapper.updateById(list.get(i));
+        }
+
         return 1;
     }
 
@@ -137,7 +147,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
     }
 
     @Override
-    public int serReaded(Long goodsId, Long userId, Long ortherId) {
+    public int setReaded(Long goodsId, Long userId, Long ortherId) {
         QueryWrapper<Message> wrapper=new QueryWrapper<>();
         wrapper.eq("goodsId",goodsId);
         wrapper.eq("userId",userId);
